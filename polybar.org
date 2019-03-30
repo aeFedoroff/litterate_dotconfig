@@ -1,0 +1,798 @@
+#+STARTUP: hidestars content
+* кастомная рабочая конфигурация[2019-02-02 Sat 13:33]
+  :LOGBOOK:
+  CLOCK: [2019-02-03 Sun 13:13]--[2019-02-03 Sun 13:30] =>  0:17
+  CLOCK: [2019-02-02 Sat 13:08]--[2019-02-02 Sat 13:15] =>  0:07
+  :END:
+   
+** предварительный комментарий
+
+   #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+     ;=====================================================
+     ;
+     ;   To learn more about how to configure Polybar
+     ;   go to https://github.com/jaagr/polybar
+     ;
+     ;   The README contains alot of information
+     ;
+     ;=====================================================
+   #+END_SRC                                         
+
+** цветовая схема
+
+*** dracula
+     
+    #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+      [colors]
+
+      ;++++++++++++++++++++++
+      ; Dracula Color Theme +
+      ;++++++++++++++++++++++
+
+      bg = #10101000
+      fg = #f8f8f2
+      select = #44475a
+      blue = #6272a4
+      cyan = #8be9fd
+      pink = #ff79c6
+      purple = #bd93f9
+      green = #50fa7b
+      orange = #ffb86c
+      red = #ff5555
+      yellow = #f1fa8c
+
+      ;++++++++++++++++++++++
+
+      ;background = ${xrdb:color0:#222}
+      background = ${colors.bg} 
+      background-alt = ${colors.select}
+      ;foreground = ${xrdb:color7:#222}
+      foreground = ${colors.fg} 
+      foreground-alt = ${colors.select} 
+      primary = ${colors.purple} 
+      secondary = ${colors.cyan}
+      alert =  ${colors.pink}
+    #+END_SRC
+
+** положения баров
+
+   #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+     [bar/example]
+     ;monitor = ${env:MONITOR:eDP1}
+     monitor-strict = false
+     override-redirect = false
+     width = 100%
+     height = 20
+
+     ;было
+     fixed-center = true
+
+     ; стало
+     ;fixed-center = false
+     offset-x = 0%
+     offset-y = 0%
+
+
+     ;background = #00000000          
+     ;foreground = ${colors.foreground}
+
+     line-size = 4 
+     ;line-color = #f00
+
+
+     padding-left = 0
+     padding-right = 0
+   #+END_SRC
+
+** шрифты
+
+   #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+     ;font-0 = Liberation Sans:pixelsize=9;1
+     font-0 = Inconsolata lgc:pixelsize=9
+     ;font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
+     ;TerminessTTF Nerd Font Bold
+     font-1 = Ubuntu Nerd Font:size=11;2
+     font-2 = Wuncon Siji:pixelsize=10 
+     font-4 = FontAwesome:pixelsize=12;2
+   #+END_SRC
+
+** модули
+   :LOGBOOK:
+   CLOCK: [2019-02-02 Sat 13:26]--[2019-02-02 Sat 13:28] =>  0:02
+   :END:
+    
+*** расположение и состав модулей
+     
+**** левая панель
+
+***** COMMENT меню/i3/xwindow
+       
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        modules-left = menu i3 xwindow
+      #+END_SRC
+
+       
+***** i3/xwindow
+
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        modules-left = i3 xwindow
+      #+END_SRC                  
+
+**** центр
+     :LOGBOOK:
+     CLOCK: [2019-02-02 Sat 13:28]--[2019-02-02 Sat 13:32] =>  0:04
+     :END:
+      
+***** xbacklight/mpd/volume
+
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        modules-center = xbacklight mpd volume
+      #+END_SRC
+
+**** правая панель
+
+      
+***** память/процессор/температура/батарея/время-дата/xkeyboard
+      :LOGBOOK:
+      CLOCK: [2019-02-02 Sat 13:32]--[2019-02-02 Sat 14:13] =>  0:41
+      :END:
+
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        modules-right = memory cpu temperature battery date xkeyboard
+      #+END_SRC
+       
+**** трей
+
+***** положение трея
+       
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        tray-position = right
+      #+END_SRC                                         
+
+***** TODO число иконок трея
+      SCHEDULED: <2019-02-02 Sat>
+
+      проверить, действительно ли число икоонок
+
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        tray-padding = 2
+      #+END_SRC
+
+       
+***** прозрачность трея
+
+       
+****** прозрачен
+
+       #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+         tray-transparent = true
+       #+END_SRC                                         
+
+****** COMMENT непрозрачен
+
+       #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+         tray-transparent = false
+       #+END_SRC
+
+        
+***** фон трея
+
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        tray-background = #0063ff
+      #+END_SRC
+       
+*** блоки не ясного назначения
+
+    #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+      ;wm-restack = bspwm
+      ;wm-restack = i3
+
+      ;override-redirect = true
+
+      ;scroll-up = bspwm-desknext
+      ;scroll-down = bspwm-deskprev
+
+      ;scroll-up = i3wm-wsnext
+      ;scroll-down = i3wm-wsprev
+    #+END_SRC                                         
+
+*** модуль меню
+
+    #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+      [module/menu]
+      type = custom/menu
+      interval = 2
+      format-spacing = 1
+      format-background = ${colors.background}
+      label-open = ""
+      label-open-foreground = ${colors.foreground}
+      label-open-background = ${colors.background}
+      label-close = ""
+      label-close-foreground = ${colors.background}
+      label-separator = " | "
+      label-separator-foreground = ${colors.foreground}
+      # Top level
+      menu-0-0 = "  "
+      menu-0-0-exec = menu-open-1
+      menu-0-1 = "    |"
+      menu-0-1-exec = menu-open-2
+      # 1
+      menu-1-0 = "  "
+      menu-1-0-exec = exo-open --launch google-chrome-stable
+      menu-1-1 = "  "
+      menu-1-1-exec = i3-scrot -s
+      menu-1-2 = "    |"
+      menu-1-2-exec = exo-open --launch FileManager
+      # 3
+      menu-2-0 = "  "
+      menu-2-0-exec = menu-open-0
+      menu-2-1 = "   "
+      menu-2-1-exec = blurlock
+      menu-2-2 = "   "
+      menu-2-2-exec = i3exit logout
+      menu-2-3 = "   "
+      menu-2-3-exec = systemctl reboot
+      menu-2-4 = "      |"
+      menu-2-4-exec = systemctl poweroff
+    #+END_SRC                                         
+
+*** xbacklight -- посдветка экрана
+
+    #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+      [module/xbacklight]
+      type = internal/xbacklight
+
+      label = " "
+      format = <label> <bar> 
+
+      bar-width = 6 
+      bar-indicator = ●
+      bar-indicator-foreground = ${colors.fg} 
+      bar-indicator-font = 2
+      bar-fill = ●
+      bar-fill-font = 2
+      bar-fill-foreground = #9f78e1
+      bar-empty = ●
+      bar-empty-font = 2
+      bar-empty-foreground = ${colors.foreground-alt}
+    #+END_SRC
+     
+*** xwindow -- заголовок сфокусированного окна в строке состояния
+
+    #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+      [module/xwindow]
+      type = internal/xwindow
+      label = %title:0:30:...%
+    #+END_SRC                 
+
+*** xkeyboard -- раскладка
+
+    #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+      [module/xkeyboard]
+      type = internal/xkeyboard
+      blacklist-0 = num lock
+
+      format-prefix = " "
+      format-prefix-foreground = ${colors.foreground-alt}
+      format-prefix-underline = ${colors.secondary}
+
+      label-layout = %layout%
+      label-layout-underline = ${colors.secondary}
+
+      label-indicator-padding = 2
+      label-indicator-margin = 1
+      label-indicator-background = ${colors.secondary}
+      label-indicator-underline = ${colors.secondary}
+    #+END_SRC                                        
+
+*** bspwm
+
+    #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+      [module/bspwm]
+      type = internal/bspwm
+
+      ws-icon-0 = code;♚
+      ws-icon-1 = office;♛
+      ws-icon-2 = graphics;♜
+      ws-icon-3 = mail;♝
+      ws-icon-4 = web;♞
+      ws-icon-default = ♟
+
+      label-focused = %name%
+      label-focused-background = ${colors.background-alt}
+      label-focused-underline= ${colors.primary}
+      label-focused-padding = 2
+
+      label-occupied = %name%
+      label-occupied-padding = 2
+
+      label-urgent = %name%!
+      label-urgent-background = ${colors.alert}
+      label-urgent-padding = 2
+
+      label-empty = %name%
+      label-empty-foreground = ${colors.foreground-alt}
+      label-empty-padding = 2
+    #+END_SRC                                         
+
+*** filesystem -- информация о примонтированных партициях
+
+    #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+      [module/filesystem]
+      type = internal/fs
+      interval = 25
+
+      mount-0 = /
+
+      label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
+      label-unmounted = %mountpoint% not mounted
+      label-unmounted-foreground = ${colors.foreground-alt}
+    #+END_SRC                                         
+     
+*** i3wm отображение рабочих столов
+
+    #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+      [module/i3]
+      type = internal/i3
+      format = <label-state> <label-mode>
+      index-sort = true
+      wrapping-scroll = false
+      strip-wsnumbers = true
+
+      ws-icon-0 = 1;♚
+      ws-icon-1 = 2;♛
+      ws-icon-2 = 3;♜
+      ws-icon-3 = 4;♝
+      ws-icon-4 = 5;♞
+      ws-icon-default = ♟
+
+      ; Only show workspaces on the same output as the bar
+      ;pin-workspaces = true
+
+      label-mode-padding = 2
+      label-mode-foreground = #000
+      label-mode-background = ${colors.primary}
+
+      ; focused = Active workspace on focused monitor
+      label-focused = %name% 
+      label-focused-background = ${module/bspwm.label-focused-background}
+      label-focused-underline = ${module/bspwm.label-focused-underline}
+      label-focused-padding = ${module/bspwm.label-focused-padding}
+
+      ; unfocused = Inactive workspace on any monitor
+      label-unfocused = %name%
+      label-unfocused-underline = ${colors.select}
+      label-unfocused-padding = ${module/bspwm.label-occupied-padding}
+
+      ; visible = Active workspace on unfocused monitor
+      label-visible = %name%
+      label-visible-background = ${self.label-focused-background}
+      label-visible-underline = ${self.label-focused-underline}
+      label-visible-padding = ${self.label-focused-padding}
+
+      ; urgent = Workspace with urgency hint set
+      label-urgent = %name%
+      ;label-urgent-background = ${module/bspwm.label-urgent-background}
+      ;label-urgent-padding = ${module/bspwm.label-urgent-padding}
+    #+END_SRC                                         
+
+*** cpu -- информация о процессоре
+
+    #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+      [module/cpu]
+      type = internal/cpu
+      interval = 2
+      ;format-prefix = " "
+      format-prefix = "| "
+      format-prefix-foreground = ${colors.foreground-alt}
+      format-underline = ${colors.purple} 
+      label = %percentage-cores%
+      label-padding = 2
+    #+END_SRC                                         
+
+*** memory -- оперативная память
+
+    [[https://github.com/jaagr/polybar/wiki/Module:-memory][Информация]] о настройке модуля memory в гитхабе разработчика.
+     
+    #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+      [module/memory]
+      type = internal/memory
+    #+END_SRC                                         
+
+**** интервал обновления
+
+     #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+       interval = 2
+     #+END_SRC     
+
+**** префиксный символ
+
+     
+***** COMMENT с символом  проблемы
+     
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        format-prefix = " "
+      #+END_SRC                                         
+
+***** COMMENT символ p
+
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        format-prefix = "p"
+      #+END_SRC                                         
+
+***** COMMENT символ 
+
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        format-prefix = " "
+      #+END_SRC                                         
+
+***** символ |
+
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        format-prefix = | 
+      #+END_SRC                                         
+
+***** цвет задника префикса
+
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        format-prefix-foreground = ${colors.foreground-alt}
+      #+END_SRC                                         
+
+**** цвет подчёркивания
+
+     #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+       format-underline = ${colors.purple}
+     #+END_SRC                                         
+
+**** отображаемая метка
+
+***** отображение в процентах
+
+       
+****** COMMENT оперативка
+        
+       #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+         label = %percentage_used%%
+       #+END_SRC                                         
+
+****** оперативка + swap
+        
+       #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+         label =  %percentage_used%%  %percentage_swap_used%%
+       #+END_SRC
+        
+**** вместимость
+
+     #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+       label-padding = 2
+     #+END_SRC
+      
+*** дата
+
+    #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+      [module/date]
+      type = internal/date
+    #+END_SRC                                         
+
+**** интервал обновления
+
+     #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+       interval = 50
+     #+END_SRC      
+
+**** настройки даты
+
+      
+***** день/месяц/год
+
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        date = " %d.%m.%Y"
+      #+END_SRC            
+
+**** настройки отображение времени
+
+      
+***** час/минута/
+       
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        time = " %H:%M"
+      #+END_SRC
+       
+***** час/минута/секунда
+
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        ;time = " %H:%M:%S"
+        ;time = %I:%M %p
+        ;time-alt = %H:%M:%S
+      #+END_SRC
+
+**** формат отображения
+
+     #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+       ;format = 🕓 <label>
+     #+END_SRC                                         
+       
+**** префиксный разделитель
+
+     префиксный разделитель -- символ обозначающий левую границу модуля
+
+***** Символ для разделителя      
+****** COMMENT разделитель 
+
+       этот юникодсимвол приводит к ошибке
+        
+       #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+         ;format-prefix = 
+       #+END_SRC
+
+****** разделитель |
+
+       #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+         format-prefix = |
+       #+END_SRC                                         
+
+***** цвет задника
+
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        format-prefix-foreground = ${colors.foreground-alt}
+      #+END_SRC
+
+       
+***** цвет подчёркивания
+
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        format-underline = ${colors.cyan} 
+      #+END_SRC
+       
+**** отображаемая метка
+
+     #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+       label = %time% %date%
+     #+END_SRC                                         
+
+**** иконочная вместимость модуля
+
+     #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+       label-padding = 2
+     #+END_SRC                                         
+
+*** volume -- звук
+
+    #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+      [module/volume]
+      type = internal/volume
+
+      format-volume = <label-volume> <bar-volume>
+      label-volume = ""
+      label-volume-foreground = ${colors.select}
+
+      format-muted-foreground = ${colors.foreground-alt}
+      label-muted = sound muted
+
+      bar-volume-width = 5
+      bar-volume-foreground-0 = ${colors.cyan} 
+      bar-volume-foreground-1 = ${colors.cyan}
+      bar-volume-foreground-2 = ${colors.cyan}    
+      bar-volume-foreground-3 = ${colors.cyan}
+      bar-volume-foreground-4 = ${colors.cyan} 
+      bar-volume-foreground-5 = ${colors.pink} 
+      bar-volume-foreground-6 = ${colors.red} 
+      bar-volume-gradient = false
+      bar-volume-indicator = 
+      bar-volume-indicator-font = 1
+      bar-volume-fill = 
+      bar-volume-fill-font = 1
+      bar-volume-empty = 
+      bar-volume-empty-font = 1
+      bar-volume-empty-foreground = ${colors.foreground-alt}
+    #+END_SRC                                         
+
+*** battery -- информация о батарее
+
+    #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+      [module/battery]
+      type = internal/battery
+      battery = BAT0
+      adapter = ADP1
+      full-at = 98
+
+      label-discharging-padding = 2
+      label-charging-padding = 2
+      label-full-padding = 2
+
+      format-charging = <animation-charging> <label-charging>
+      format-charging-underline = ${colors.purple} 
+
+      format-discharging = <ramp-capacity> <label-discharging>
+      format-discharging-underline = ${colors.pink}
+
+      format-full-prefix = " "
+      format-full-prefix-foreground = ${colors.foreground-alt}
+      format-full-underline = ${colors.green}
+
+      ramp-capacity-0 = 
+      ramp-capacity-1 = 
+      ramp-capacity-2 = 
+      ramp-capacity-foreground = ${colors.foreground-alt}
+
+      animation-charging-0 = 
+      animation-charging-1 = 
+      animation-charging-2 = 
+      animation-charging-foreground = ${colors.foreground-alt}
+      animation-charging-framerate = 750
+    #+END_SRC                           
+
+*** модуль температуры
+
+    #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+      [module/temperature]
+      type = internal/temperature
+    #+END_SRC                                         
+
+**** граница температурной зоны
+
+     #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+       thermal-zone = 0
+     #+END_SRC
+
+      
+**** значение тревожной температуры
+
+     #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+       warn-temperature = 60
+     #+END_SRC              
+
+**** формат отображения
+
+     #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+       format = <ramp> <label>
+     #+END_SRC                
+
+**** цвет подчёркивания
+
+     #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+       format-underline = ${colors.purple}
+     #+END_SRC                            
+
+**** формат отображения тревожных значений
+
+     #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+       format-warn = <ramp> <label-warn>
+     #+END_SRC                          
+
+**** цвет подчёркивания тревожных значений
+
+     #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+       format-warn-underline = ${self.format-underline}
+     #+END_SRC                                         
+
+**** метка
+
+      
+***** нормальных значений
+       
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        label = %temperature%
+      #+END_SRC              
+
+***** тревожных значений
+
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        label-warn = %temperature%
+      #+END_SRC                   
+
+**** цвет задника тревожных значений
+
+     #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+       warn-foreground = ${colors.secondary}
+     #+END_SRC                                         
+
+**** вместимость иконок
+
+     #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+       label-padding = 2
+     #+END_SRC                                         
+
+**** символы для отображения температуры различных ядер
+
+***** COMMENT вариант по умолчанию 
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        ;ramp-0 = 
+        ramp-0 = t
+        ramp-1 = 
+        ramp-2 = y
+        ;ramp-2 = 
+      #+END_SRC                                         
+
+***** символ для общей температуры
+
+      #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+        ramp-0 = 
+      #+END_SRC                                         
+
+***** символ для температуры первого ядра
+
+       
+****** COMMENT римская единица юникод
+
+       у полибара проблемы с воспроизведением этих символов
+       #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+         ramp-1 = Ⅰ
+       #+END_SRC                                         
+
+****** римская единица I(ай)
+
+       #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+         ramp-1 = I
+       #+END_SRC                                         
+
+***** символ для температуры второго ядра
+
+       
+****** COMMENT римская двойка юникод
+
+       #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+         ramp-2 = ⁡Ⅱ
+       #+END_SRC                                         
+
+****** римская единица II(две i)
+
+       #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+         ramp-2 = II
+       #+END_SRC
+        
+**** задник температуры
+
+     #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+       ramp-foreground = ${colors.foreground-alt}
+     #+END_SRC                                         
+
+*** mpd -- музыкальный демон
+
+    #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+      [module/mpd]
+      type = internal/mpd
+      interval = 1
+      format-online =  <label-song> <toggle>  
+
+      label-offline = mpd is offline
+
+      ;label-song =  %artist% - %title%
+      label-song =  %title%
+      icon-prev = 
+      icon-stop = 
+      icon-play = 
+      icon-pause = 
+      icon-next = 
+      icon-repeat = 
+      icon-repeatone = 
+      icon-random = 
+
+      toggle-on-foreground = #ff
+      toggle-off-foreground = #55
+
+      label-song-maxlen = 100
+      label-song-ellipsis = true
+    #+END_SRC                                         
+
+** общие настройки
+
+   #+BEGIN_SRC shell :tangle ~/.config/polybar/config
+     [settings]
+     throttle-output = 5
+     throttle-output-for = 100
+     throttle-input-for = 3
+     compositing-background = over
+     compositing-foreground = over
+     compositing-overline = over
+     compositing-underline = over
+     compositing-border = over
+     screenchange-reload = false
+
+     [global/wm]
+     margin-top = 0
+     margin-bottom = 0
+
+     ; vim:ft=dosini
+   #+END_SRC
+    

@@ -1,0 +1,49 @@
+#+LATEX_CLASS: article
+#+LATEX_CLASS_OPTIONS:
+#+LATEX_HEADER:
+#+LATEX_HEADER_EXTRA:
+#+DESCRIPTION:
+#+KEYWORDS:
+#+SUBTITLE:
+#+LATEX_COMPILER: pdflatex
+#+DATE: [2019-02-13 Wed 18:56]
+
+* Выпадающее окно
+
+  #+BEGIN_SRC shell :tangle ~/.scripts/ddspawn
+
+    #!/bin/sh
+
+    # Toggle floating dropdown terminal in i3, or start if non-existing.
+    # $1 is the script run in the terminal.
+    # All other args are terminal settings.
+    # Terminal names are in dropdown_* to allow easily setting i3 settings.
+
+    [ -z "$1" ] && exit
+
+    if xwininfo -tree -root | grep "(\"dropdown_$1\" ";
+    then
+            echo "Window detected."
+            i3 "[instance=\"dropdown_$1\"] scratchpad show; [instance=\"dropdown_$1\"] move position center"
+    else
+            echo "Window not detected... spawning."
+            i3 "exec --no-startup-id termite --name dropdown_$1 $(echo "$@" | cut -d ' ' -f2-) -e $1"
+    fi
+  #+END_SRC
+
+* калькулятор
+
+  #+BEGIN_SRC shell :tangle ~/.scripts/ddcalc
+    #!/bin/sh
+    # This script ensures that i3 will spawn a calculator.
+    # If R is installed, it will run R, otherwise it will run
+    # Python.
+    ([ -e /usr/bin/R ] && R -q --no-save) || python -q
+  #+END_SRC
+
+* всплывающий перевод
+
+  #+BEGIN_SRC shell :tangle ~/.scripts/ddtrans
+    #!/bin/sh
+    echo | dmenu -i | trans :ru > /home/eto/.translate
+  #+END_SRC
